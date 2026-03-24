@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Compass</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<header class="header">
+    <div class="logo">Career Compass</div>
+    <nav class="nav">
+        <a href="#home" class="active">Home</a>
+        <a href="#features">Features</a>
+        <a href="https://jobs.best-jobs-online.com/jobs?q=Search&locphysical=154764&qrn_source=google&qrn_medium=cpc&qrn_campaign=439154329&msclkid=16435262543617d2969d3a73960130a5&utm_source=bing&utm_medium=cpc&utm_campaign=IN%7CPositionKWs&utm_term=Search%20jobs&utm_content=Search">Job Search</a>
+        <a href="#goals">Career Goals</a>
+        <a href="#contact">Contact</a>
+        <a href="get-started.html">Get Started</a>
+    </nav>
+    <button class="nav-toggle"><i class="fas fa-bars"></i></button>
+</header>
+
+<section class="hero" id="home">
+    <h1>Unlock Your Career Potential</h1>
+    <p>Personalized career guidance with AI-powered insights from CareerBot.</p>
+    <button class="cta-button" onclick="document.getElementById('chatbot-button').click()">Set Career Goals</button>
+</section>
+
+<section class="features" id="features">
+    <h2>Why Choose Us?</h2>
+    <div class="feature-grid">
+        <a href="https://www.resume-now.com/lp/rnarsmsm121?utm_source=bing&utm_medium=sem&utm_campaign=568035454&utm_term=resume%20builder&network=o&device=c&adposition=&adgroupid=1174280164573426&msclkid=c56c9d021ab41eae7562f513d9d57c89&utm_content=resume%20builder" target="_blank" class="feature-card">
+            <i class="fas fa-rocket"></i>
+            <h3>Resume Builder</h3>
+            <p>Begin your career planning in minutes with our AI-driven tools.</p>
+        </a>
+        <div class="feature-card">
+            <i class="fas fa-user-check"></i>
+            <h3>Personalized Advice</h3>
+            <p>Get tailored recommendations based on your goals and experience.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-headset"></i>
+            <h3>24/7 Support</h3>
+            <p>Chat with CareerBot anytime for instant career advice.</p>
+        </div>
+    </div>
+</section>
+
+
+<section class="career-goals" id="goals">
+    <h2>Set Your Career Goals</h2>
+    <p>Define your aspirations and let CareerBot guide you to success.</p>
+    <form id="goals-form" class="goals-form">
+        <input type="text" id="career-field" placeholder="Desired Career Field (e.g., Software Engineering)" required>
+        <input type="text" id="experience-level" placeholder="Experience Level (e.g., Entry-Level)" required>
+        <textarea id="career-notes" placeholder="Your Career Goals or Questions (optional)"></textarea>
+        <button type="submit">Plan My Career</button>
+    </form>
+    <div id="goals-output" class="goals-output"></div>
+</section>
+
+<section class="contact" id="contact">
+    <h2>Contact Us</h2>
+    <p>Have questions? Reach out to us!</p>
+    <form id="contact-form" class="contact-form">
+        <input type="text" id="contact-name" placeholder="Your Name" required>
+        <input type="email" id="contact-email" placeholder="Your Email" required>
+        <textarea id="contact-message" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+</section>
+
+<div class="chatbot-container">
+    <button id="chatbot-button" class="chatbot-button">
+        <i class="fas fa-comment-dots"></i>
+        <span class="chatbot-tooltip">Chat with CareerBot</span>
+    </button>
+    <div id="chatbot-window" class="chatbot-window">
+        <div class="chatbot-header">
+            <h3>CareerBot - Home</h3>
+            <button id="close-chatbot" class="close-button"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chatbot-messages" id="chatbot-messages"></div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbot-input" placeholder="Ask about your career...">
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>© 2025 Career Counseling Bot - Powered by xAI</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
