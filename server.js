@@ -2,33 +2,18 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // In-memory storage for career goals (simulating a database)
 let careerGoals = [];
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve index page
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// Serve get-started page
-app.get('/get-started.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'get-started.html'));
-});
-
-// Serve set-goals page
-app.get('/set-goals.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'set-goals.html'));
-});
-
-// Serve job-search page
-app.get('/job-search.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'job-search.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Get all career goals
