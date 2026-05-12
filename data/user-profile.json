@@ -1,0 +1,299 @@
+{
+  "skills": [],
+  "proficiency": {},
+  "targetTrack": "fullstack",
+  "careerGoal": "",
+  "experienceLevel": "entry",
+  "weeklyHours": 10,
+  "lastLearningPath": {
+    "title": "Full-stack web developer — your learning path",
+    "summary": "About 27 weeks at ~10 hrs/week (~266h of mapped content). Foundation steps you marked as advanced are de-emphasized; missing track skills surface as gap modules first.",
+    "track": "fullstack",
+    "sources": [
+      "rules"
+    ],
+    "weeklyEstimate": 27,
+    "totalHours": 266,
+    "phases": [
+      {
+        "id": "gaps",
+        "name": "Priority skill gaps",
+        "description": "Suggested first based on your selected track vs skills you listed.",
+        "steps": [
+          {
+            "id": "gap-html",
+            "title": "Fill gap: HTML structure",
+            "description": "Your roadmap assumes HTML comfort — spend focused time on semantic tags and forms.",
+            "resourceLabel": "MDN HTML elements",
+            "resourceUrl": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element",
+            "estHours": 8,
+            "skillsAddressed": [
+              "html"
+            ],
+            "level": "foundation",
+            "isGap": true
+          },
+          {
+            "id": "gap-css",
+            "title": "Fill gap: CSS layout",
+            "description": "Practice Flexbox/Grid until common layouts feel automatic.",
+            "resourceLabel": "CSS Grid Garden",
+            "resourceUrl": "https://cssgridgarden.com/",
+            "estHours": 8,
+            "skillsAddressed": [
+              "css"
+            ],
+            "level": "foundation",
+            "isGap": true
+          },
+          {
+            "id": "gap-javascript",
+            "title": "Fill gap: JavaScript core",
+            "description": "Solid JS unlocks React and Node — prioritize functions, objects, and async/await.",
+            "resourceLabel": "freeCodeCamp JS",
+            "resourceUrl": "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/",
+            "estHours": 8,
+            "skillsAddressed": [
+              "javascript"
+            ],
+            "level": "foundation",
+            "isGap": true
+          },
+          {
+            "id": "gap-git",
+            "title": "Fill gap: Version control",
+            "description": "Daily commits, branches, and PR reviews mirror professional workflows.",
+            "resourceLabel": "Oh My Git! (game)",
+            "resourceUrl": "https://ohmygit.org/",
+            "estHours": 8,
+            "skillsAddressed": [
+              "git"
+            ],
+            "level": "foundation",
+            "isGap": true
+          },
+          {
+            "id": "gap-react",
+            "title": "Fill gap: React",
+            "description": "Build small UIs with components and hooks before tackling large apps.",
+            "resourceLabel": "React.dev Learn",
+            "resourceUrl": "https://react.dev/learn",
+            "estHours": 8,
+            "skillsAddressed": [
+              "react"
+            ],
+            "level": "foundation",
+            "isGap": true
+          },
+          {
+            "id": "gap-nodejs",
+            "title": "Fill gap: Node.js runtime",
+            "description": "Run scripts locally, use npm, and build a tiny HTTP server before frameworks.",
+            "resourceLabel": "Node.js learn",
+            "resourceUrl": "https://nodejs.org/en/learn/getting-started/introduction-to-nodejs",
+            "estHours": 8,
+            "skillsAddressed": [
+              "nodejs"
+            ],
+            "level": "foundation",
+            "isGap": true
+          },
+          {
+            "id": "gap-sql",
+            "title": "Fill gap: SQL",
+            "description": "Practice joins and aggregations until you can explain a schema to a teammate.",
+            "resourceLabel": "SQLBolt",
+            "resourceUrl": "https://sqlbolt.com/",
+            "estHours": 8,
+            "skillsAddressed": [
+              "sql"
+            ],
+            "level": "foundation",
+            "isGap": true
+          },
+          {
+            "id": "gap-rest",
+            "title": "Fill gap: REST & HTTP",
+            "description": "Use curl or Thunder Client to call public APIs and inspect responses.",
+            "resourceLabel": "HTTP.cat (status codes)",
+            "resourceUrl": "https://http.cat/",
+            "estHours": 8,
+            "skillsAddressed": [
+              "rest"
+            ],
+            "level": "foundation",
+            "isGap": true
+          }
+        ]
+      },
+      {
+        "id": "foundation",
+        "name": "Web foundations",
+        "steps": [
+          {
+            "id": "html-css",
+            "title": "Semantic HTML & responsive CSS",
+            "description": "Layout with Flexbox/Grid, accessibility basics, and mobile-first patterns.",
+            "resourceLabel": "MDN — Learn HTML & CSS",
+            "resourceUrl": "https://developer.mozilla.org/en-US/docs/Learn",
+            "estHours": 25,
+            "skillsAddressed": [
+              "html",
+              "css"
+            ],
+            "level": "foundation",
+            "isGap": false
+          },
+          {
+            "id": "javascript-core",
+            "title": "JavaScript fundamentals",
+            "description": "Types, functions, async/await, modules, and the DOM without a framework first.",
+            "resourceLabel": "javascript.info",
+            "resourceUrl": "https://javascript.info/",
+            "estHours": 35,
+            "skillsAddressed": [
+              "javascript"
+            ],
+            "level": "foundation",
+            "isGap": false
+          }
+        ]
+      },
+      {
+        "id": "tooling",
+        "name": "Tooling & collaboration",
+        "steps": [
+          {
+            "id": "git-github",
+            "title": "Git + GitHub workflow",
+            "description": "Branching, PRs, meaningful commits, and resolving merge conflicts like on a real team.",
+            "resourceLabel": "GitHub Skills",
+            "resourceUrl": "https://skills.github.com/",
+            "estHours": 12,
+            "skillsAddressed": [
+              "git"
+            ],
+            "level": "core",
+            "isGap": false
+          },
+          {
+            "id": "http-rest",
+            "title": "HTTP & REST APIs",
+            "description": "Methods, status codes, JSON, auth headers, and reading OpenAPI-style docs.",
+            "resourceLabel": "MDN — HTTP",
+            "resourceUrl": "https://developer.mozilla.org/en-US/docs/Web/HTTP",
+            "estHours": 8,
+            "skillsAddressed": [
+              "rest"
+            ],
+            "level": "core",
+            "isGap": false
+          }
+        ]
+      },
+      {
+        "id": "frontend",
+        "name": "Frontend framework",
+        "steps": [
+          {
+            "id": "react-fundamentals",
+            "title": "React fundamentals",
+            "description": "Components, props/state, hooks, forms, and client-side routing.",
+            "resourceLabel": "React.dev — Learn",
+            "resourceUrl": "https://react.dev/learn",
+            "estHours": 40,
+            "skillsAddressed": [
+              "react",
+              "javascript"
+            ],
+            "level": "core",
+            "isGap": false
+          },
+          {
+            "id": "react-data",
+            "title": "Data fetching & UI states",
+            "description": "Loading/error patterns, caching basics, and env-based API URLs for dev/prod.",
+            "resourceLabel": "TanStack Query docs",
+            "resourceUrl": "https://tanstack.com/query/latest",
+            "estHours": 15,
+            "skillsAddressed": [
+              "react",
+              "rest"
+            ],
+            "level": "core",
+            "isGap": false
+          }
+        ]
+      },
+      {
+        "id": "backend",
+        "name": "Backend & persistence",
+        "steps": [
+          {
+            "id": "nodejs-express",
+            "title": "Node.js + Express APIs",
+            "description": "Middleware, validation, structured routes, and error handling — mirrors this project’s stack.",
+            "resourceLabel": "Express guide",
+            "resourceUrl": "https://expressjs.com/en/starter/installing.html",
+            "estHours": 25,
+            "skillsAddressed": [
+              "nodejs",
+              "rest"
+            ],
+            "level": "core",
+            "isGap": false
+          },
+          {
+            "id": "sql-design",
+            "title": "SQL & relational modeling",
+            "description": "Normalization, joins, indexes, and migrations mindset for real apps.",
+            "resourceLabel": "PostgreSQL tutorial",
+            "resourceUrl": "https://www.postgresql.org/docs/current/tutorial.html",
+            "estHours": 20,
+            "skillsAddressed": [
+              "sql"
+            ],
+            "level": "core",
+            "isGap": false
+          }
+        ]
+      },
+      {
+        "id": "ship",
+        "name": "Ship & interview",
+        "steps": [
+          {
+            "id": "deploy",
+            "title": "Deploy full-stack app",
+            "description": "Static SPA + API on one host or split; env vars, HTTPS, and health checks.",
+            "resourceLabel": "Render docs",
+            "resourceUrl": "https://render.com/docs",
+            "estHours": 10,
+            "skillsAddressed": [
+              "nodejs"
+            ],
+            "level": "capstone",
+            "isGap": false
+          },
+          {
+            "id": "portfolio",
+            "title": "Portfolio + system design lite",
+            "description": "README with architecture diagram, API list, and 2-minute Loom walkthrough for recruiters.",
+            "resourceLabel": "Example README patterns",
+            "resourceUrl": "https://github.com/readme/guides",
+            "estHours": 12,
+            "skillsAddressed": [
+              "git"
+            ],
+            "level": "capstone",
+            "isGap": false
+          }
+        ]
+      }
+    ],
+    "meta": {
+      "generatedAt": "2026-05-12T18:15:25.382Z",
+      "experienceLevel": "entry"
+    }
+  }
+}

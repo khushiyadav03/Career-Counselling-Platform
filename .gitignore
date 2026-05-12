@@ -27,3 +27,6 @@ build/
 # Misc
 *.log
 .cache/
+
+# Contact submissions (may contain PII)
+data/contacts.json

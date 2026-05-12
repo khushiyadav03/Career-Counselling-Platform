@@ -1,216 +1,142 @@
-# Career Counselling Platform
+# Career Compass
 
-An AI-powered career counseling chatbot web application that helps users set career goals, get personalized advice, and navigate their career journey.
+**Portfolio-grade full-stack app:** a React (Vite) SPA plus an Express API that delivers **personalized learning paths**, **job-board deep links**, **persisted career goals**, **CareerBot** (Gemini on the server with mock fallback), and **contact capture**—with JSON file persistence so reviewers can run it locally without a database.
 
-## 🎯 Project Structure
-
-```
-Career-Counselling-Platform/
-│
-├── server.js              (Express server - entry point)
-├── package.json           (Project dependencies)
-├── package-lock.json      (Dependency lock file)
-├── .gitignore            (Git ignore rules)
-│
-├── public/               (Frontend files)
-│   ├── index.html        (Home page)
-│   ├── get-started.html  (Get started page)
-│   ├── set-goals.html    (Career goals page)
-│   ├── styles.css        (Styling)
-│   └── script.js         (JavaScript functionality)
-│
-└── README.md            (This file)
-```
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js (v14 or higher)
-- npm (comes with Node.js)
-
-### Installation
-
-1. **Install dependencies:**
-```bash
-npm install
-```
-
-2. **Start the development server:**
-```bash
-npm start
-```
-
-3. **Open in browser:**
-```
-http://localhost:3000
-```
-
-## ✨ Features
-
-### 🤖 CareerBot Chatbot
-- AI-powered career guidance using Gemini API
-- Fallback to mock responses if API is unavailable
-- Page-specific welcome messages
-- Real-time chat interface
-- Clear chat history option
-
-### 📋 Career Goals Management
-- Set career goals with field, experience level, and notes
-- View all saved goals
-- Delete goals
-- Auto-save to localStorage
-- Backend API integration
-
-### 💼 Career Planning
-- Personalized career recommendations
-- Resume building tips
-- Job search guidance
-- Skills development suggestions
-
-### 📱 Responsive Design
-- Mobile-friendly interface
-- Adaptive layouts
-- Touch-optimized navigation
-
-## 🛠️ API Endpoints
-
-### GET `/api/career-goals`
-Retrieve all saved career goals.
-
-**Response:**
-```json
-{
-  "careerGoals": [
-    {
-      "careerField": "Software Engineering",
-      "experienceLevel": "Entry-Level",
-      "notes": "Interested in backend development"
-    }
-  ]
-}
-```
-
-### POST `/api/career-goals`
-Create a new career goal.
-
-**Request Body:**
-```json
-{
-  "careerField": "string",
-  "experienceLevel": "string",
-  "notes": "string (optional)"
-}
-```
-
-### DELETE `/api/career-goals/:index`
-Delete a career goal by index.
-
-**Response:**
-```json
-{
-  "careerGoals": []
-}
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-Create a `.env` file in the root directory:
-
-```env
-PORT=3000
-GEMINI_API_KEY=your_api_key_here
-```
-
-### Port
-- Default: `3000`
-- Can be changed via `PORT` environment variable
-- Automatically uses `process.env.PORT` for deployment platforms
-
-## 📦 Dependencies
-
-- **express**: Web framework for Node.js
-- **cors**: Enable Cross-Origin Resource Sharing
-- **path**: Node.js path utilities
-
-## 🚁 Deployment
-
-### Render
-1. Push code to GitHub
-2. Connect repository to Render
-3. Set `Root Directory` to root if server.js is at root
-4. Render will automatically:
-   - Run `npm install`
-   - Run `npm start`
-
-### Environment Setup
-- Render detects `PORT` environment variable
-- Ensure `.gitignore` excludes `node_modules/`
-- All dependencies must be in `package.json`
-
-## 📝 File Descriptions
-
-### `server.js`
-- Main entry point for the application
-- Sets up Express server
-- Defines API routes
-- Serves static files from `public/` folder
-- Handles CORS and JSON parsing
-
-### `public/index.html`
-- Home page with hero section
-- Feature cards
-- Career goals form
-- ChatBot widget
-
-### `public/styles.css`
-- All CSS styling for the application
-- Responsive design with media queries
-- Chatbot UI styling
-- Form and button styling
-
-### `public/script.js`
-- Frontend JavaScript logic
-- ChatBot functionality
-- Career goals management
-- Local storage integration
-- Gemini API integration
-
-## 🔐 Security Notes
-
-- API keys should be stored in `.env` file
-- Don't commit `.env` to repository
-- Use environment variables for sensitive data
-
-## 🐛 Common Issues
-
-### "Cannot find module 'cors'"
-```bash
-npm install cors
-```
-
-### Server won't start
-- Check if port is already in use
-- Ensure `server.js` exists at root
-- Run `npm install` to install dependencies
-
-### Static files not loading
-- Ensure all frontend files are in `public/` folder
-- Check that `server.js` uses `path.join(__dirname, 'public')`
-- Clear browser cache
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
-## 🤝 Contributing
-
-Feel free to fork this project and submit pull requests for any improvements.
-
-## 📧 Contact
-
-For questions or suggestions, please reach out through the contact form on the website.
+Use this README in interviews: it states the problem, architecture, and API surface clearly.
 
 ---
 
-**Built with ❤️ for career growth**
+## Highlights for recruiters
+
+| Area | What to demo |
+|------|----------------|
+| **Learning path** | `/learn` — add skills + proficiency, pick track, **Generate** → phased plan with gap fill + optional Gemini JSON (validated). |
+| **Job search** | `/job-search` — keywords + filters → opens Indeed, LinkedIn, Google Jobs, Glassdoor (+ Naukri for India). |
+| **Career goals** | `/set-goals` — CRUD-style list stored under `data/career-goals.json`. |
+| **CareerBot** | Floating chat — `POST /api/chat` uses goals + profile context; **no API keys in the browser**. |
+| **Ops** | Rate limits, CORS, `npm run build` + `npm start` for static + API on one process. |
+
+---
+
+## Architecture
+
+```mermaid
+flowchart TB
+  subgraph spa [React SPA - Vite]
+    Pages[Router pages]
+    Ctx[CareerGoals + Profile context]
+    Pages --> Ctx
+  end
+  subgraph api [Express API]
+    Goals[/api/career-goals]
+    Profile[/api/profile]
+    Learn[/api/learning-path/generate]
+    Chat[/api/chat]
+    Contact[/api/contact]
+  end
+  subgraph data [JSON persistence]
+    CG[career-goals.json]
+    UP[user-profile.json]
+    RM[roadmaps.json]
+    CT[contacts.json - gitignored]
+  end
+  spa -->|fetch /api| api
+  Learn --> RM
+  Learn --> UP
+  Goals --> CG
+  Profile --> UP
+  Chat --> CG
+  Contact --> CT
+```
+
+**Recommendation pipeline (learning path)**
+
+1. Client sends skills, per-skill proficiency, career goal, experience band, weekly hours, and target track.
+2. Server loads `data/roadmaps.json` and runs **`lib/learningPath.js`**: gap detection vs `requiredSkills`, skip redundant **foundation** steps when all addressed skills are **advanced**, prepend a “north star” phase from the goal string.
+3. If `GEMINI_API_KEY` is set, the server asks Gemini for **strict JSON**; response is **validated** (`validateLearningPathShape`). On any failure, the rule-based path is kept (sources may read `gemini` + `rules` only when AI path is accepted).
+4. Result is saved as `lastLearningPath` on the user profile (`data/user-profile.json`).
+
+---
+
+## Tech stack
+
+- **Frontend:** React 18, React Router 6, Vite 5, CSS (design tokens + responsive layout).
+- **Backend:** Node 18+, Express 4, `dotenv`, `cors`, `express-rate-limit`.
+- **AI:** Google Gemini **server-side only** (chat + optional learning-path JSON).
+- **Persistence:** File-based JSON under `data/` (appropriate for demos; swap for PostgreSQL in a “phase 2” story).
+
+---
+
+## Project layout
+
+```
+├── server.js              # Express app, all /api routes, serves dist/ in production
+├── lib/
+│   └── learningPath.js    # Rule-based personalization + JSON extract/validate helpers
+├── data/
+│   ├── roadmaps.json        # Track definitions + gap resource catalog
+│   ├── user-profile.json    # Skills, proficiency, last generated path
+│   ├── career-goals.json
+│   └── contacts.json        # Created at runtime; listed in .gitignore
+├── src/                     # React application
+│   ├── pages/
+│   ├── components/
+│   └── context/
+├── vite.config.js
+└── index.html
+```
+
+---
+
+## API reference
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/career-goals` | List goals |
+| POST | `/api/career-goals` | Add goal `{ careerField, experienceLevel, notes? }` |
+| DELETE | `/api/career-goals/:index` | Remove by index |
+| GET | `/api/profile` | Load skills, proficiency map, track, goal, `lastLearningPath` |
+| PUT | `/api/profile` | Merge-update profile (sanitized) |
+| POST | `/api/learning-path/generate` | Body overrides profile fields; returns `{ learningPath, profile }` |
+| POST | `/api/chat` | `{ message, careerGoals?, userProfile? }` → `{ reply, usedMock }` |
+| POST | `/api/contact` | `{ name, email, message }` |
+
+Rate limits: global `/api` bucket + tighter limits on chat and learning-path generation.
+
+---
+
+## Local development
+
+**Prerequisites:** Node.js 18+ (for native `fetch` on the server).
+
+```bash
+npm install
+cp .env.example .env
+# Add a real Gemini API key to .env if you want AI chat and AI learning paths
+npm run dev
+```
+
+- Open **http://localhost:5173** (Vite proxies `/api` → Express on **3000**).- Do not use `npm run preview` for the full app: that serves only built frontend assets and will return 404 for `/api/*` unless the backend is also running separately.- Production-like run: `npm run build` then `npm start` → **http://localhost:3000**.
+
+---
+
+## Deployment (e.g. Render)
+
+- **Build command:** `npm run build`
+- **Start command:** `npm start`
+- **Environment:** `GEMINI_API_KEY` (optional), `PORT`, optional `CLIENT_ORIGIN` if SPA and API differ.
+
+---
+
+## Ideas you can mention in interviews (“what’s next?”)
+
+- Replace JSON files with **PostgreSQL** + Prisma and add **user accounts**.
+- Add **OAuth** (GitHub) for “import skills from profile”.
+- **Embeddings** for semantic skill matching instead of string heuristics.
+- **Webhooks** or email provider for contact instead of file append.
+
+---
+
+## License
+
+MIT

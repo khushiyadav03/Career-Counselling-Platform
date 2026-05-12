@@ -1,0 +1,408 @@
+{
+  "tracks": {
+    "fullstack": {
+      "title": "Full-stack web developer",
+      "summary": "Client + server + database + deployment — the classic path to ship end-to-end products.",
+      "requiredSkills": ["html", "css", "javascript", "git", "react", "nodejs", "sql", "rest"],
+      "phases": [
+        {
+          "id": "foundation",
+          "name": "Web foundations",
+          "steps": [
+            {
+              "id": "html-css",
+              "title": "Semantic HTML & responsive CSS",
+              "description": "Layout with Flexbox/Grid, accessibility basics, and mobile-first patterns.",
+              "resourceLabel": "MDN — Learn HTML & CSS",
+              "resourceUrl": "https://developer.mozilla.org/en-US/docs/Learn",
+              "estHours": 25,
+              "skillsAddressed": ["html", "css"],
+              "level": "foundation"
+            },
+            {
+              "id": "javascript-core",
+              "title": "JavaScript fundamentals",
+              "description": "Types, functions, async/await, modules, and the DOM without a framework first.",
+              "resourceLabel": "javascript.info",
+              "resourceUrl": "https://javascript.info/",
+              "estHours": 35,
+              "skillsAddressed": ["javascript"],
+              "level": "foundation"
+            }
+          ]
+        },
+        {
+          "id": "tooling",
+          "name": "Tooling & collaboration",
+          "steps": [
+            {
+              "id": "git-github",
+              "title": "Git + GitHub workflow",
+              "description": "Branching, PRs, meaningful commits, and resolving merge conflicts like on a real team.",
+              "resourceLabel": "GitHub Skills",
+              "resourceUrl": "https://skills.github.com/",
+              "estHours": 12,
+              "skillsAddressed": ["git"],
+              "level": "core"
+            },
+            {
+              "id": "http-rest",
+              "title": "HTTP & REST APIs",
+              "description": "Methods, status codes, JSON, auth headers, and reading OpenAPI-style docs.",
+              "resourceLabel": "MDN — HTTP",
+              "resourceUrl": "https://developer.mozilla.org/en-US/docs/Web/HTTP",
+              "estHours": 8,
+              "skillsAddressed": ["rest"],
+              "level": "core"
+            }
+          ]
+        },
+        {
+          "id": "frontend",
+          "name": "Frontend framework",
+          "steps": [
+            {
+              "id": "react-fundamentals",
+              "title": "React fundamentals",
+              "description": "Components, props/state, hooks, forms, and client-side routing.",
+              "resourceLabel": "React.dev — Learn",
+              "resourceUrl": "https://react.dev/learn",
+              "estHours": 40,
+              "skillsAddressed": ["react", "javascript"],
+              "level": "core"
+            },
+            {
+              "id": "react-data",
+              "title": "Data fetching & UI states",
+              "description": "Loading/error patterns, caching basics, and env-based API URLs for dev/prod.",
+              "resourceLabel": "TanStack Query docs",
+              "resourceUrl": "https://tanstack.com/query/latest",
+              "estHours": 15,
+              "skillsAddressed": ["react", "rest"],
+              "level": "core"
+            }
+          ]
+        },
+        {
+          "id": "backend",
+          "name": "Backend & persistence",
+          "steps": [
+            {
+              "id": "nodejs-express",
+              "title": "Node.js + Express APIs",
+              "description": "Middleware, validation, structured routes, and error handling — mirrors this project’s stack.",
+              "resourceLabel": "Express guide",
+              "resourceUrl": "https://expressjs.com/en/starter/installing.html",
+              "estHours": 25,
+              "skillsAddressed": ["nodejs", "rest"],
+              "level": "core"
+            },
+            {
+              "id": "sql-design",
+              "title": "SQL & relational modeling",
+              "description": "Normalization, joins, indexes, and migrations mindset for real apps.",
+              "resourceLabel": "PostgreSQL tutorial",
+              "resourceUrl": "https://www.postgresql.org/docs/current/tutorial.html",
+              "estHours": 20,
+              "skillsAddressed": ["sql"],
+              "level": "core"
+            }
+          ]
+        },
+        {
+          "id": "ship",
+          "name": "Ship & interview",
+          "steps": [
+            {
+              "id": "deploy",
+              "title": "Deploy full-stack app",
+              "description": "Static SPA + API on one host or split; env vars, HTTPS, and health checks.",
+              "resourceLabel": "Render docs",
+              "resourceUrl": "https://render.com/docs",
+              "estHours": 10,
+              "skillsAddressed": ["nodejs"],
+              "level": "capstone"
+            },
+            {
+              "id": "portfolio",
+              "title": "Portfolio + system design lite",
+              "description": "README with architecture diagram, API list, and 2-minute Loom walkthrough for recruiters.",
+              "resourceLabel": "Example README patterns",
+              "resourceUrl": "https://github.com/readme/guides",
+              "estHours": 12,
+              "skillsAddressed": ["git"],
+              "level": "capstone"
+            }
+          ]
+        }
+      ]
+    },
+    "frontend": {
+      "title": "Frontend specialist",
+      "summary": "Deep UI engineering, performance, and accessibility — ideal if you love product detail.",
+      "requiredSkills": ["html", "css", "javascript", "git", "react"],
+      "phases": [
+        {
+          "id": "foundation",
+          "name": "Foundations",
+          "steps": [
+            {
+              "id": "html-css",
+              "title": "Semantic HTML & responsive CSS",
+              "description": "Layout systems, design tokens, and responsive breakpoints.",
+              "resourceLabel": "MDN Learn",
+              "resourceUrl": "https://developer.mozilla.org/en-US/docs/Learn",
+              "estHours": 25,
+              "skillsAddressed": ["html", "css"],
+              "level": "foundation"
+            },
+            {
+              "id": "javascript-core",
+              "title": "Modern JavaScript",
+              "description": "ES modules, async patterns, and browser APIs.",
+              "resourceUrl": "https://javascript.info/",
+              "resourceLabel": "javascript.info",
+              "estHours": 30,
+              "skillsAddressed": ["javascript"],
+              "level": "foundation"
+            }
+          ]
+        },
+        {
+          "id": "react-depth",
+          "name": "React & ecosystem",
+          "steps": [
+            {
+              "id": "react-fundamentals",
+              "title": "React patterns",
+              "description": "Composition, hooks, performance basics (memo/useMemo when needed).",
+              "resourceLabel": "React.dev",
+              "resourceUrl": "https://react.dev/learn",
+              "estHours": 35,
+              "skillsAddressed": ["react"],
+              "level": "core"
+            },
+            {
+              "id": "a11y",
+              "title": "Accessibility & testing",
+              "description": "Keyboard flows, ARIA when necessary, and React Testing Library mindset.",
+              "resourceLabel": "Testing Library",
+              "resourceUrl": "https://testing-library.com/docs/react-testing-library/intro/",
+              "estHours": 18,
+              "skillsAddressed": ["react"],
+              "level": "core"
+            }
+          ]
+        },
+        {
+          "id": "polish",
+          "name": "Polish & ship",
+          "steps": [
+            {
+              "id": "perf",
+              "title": "Web performance",
+              "description": "Core Web Vitals, lazy loading, and bundle analysis.",
+              "resourceLabel": "web.dev performance",
+              "resourceUrl": "https://web.dev/learn/performance/",
+              "estHours": 12,
+              "skillsAddressed": ["javascript"],
+              "level": "capstone"
+            }
+          ]
+        }
+      ]
+    },
+    "backend": {
+      "title": "Backend & APIs",
+      "summary": "Services, data, auth, and reliability — the engine behind every product.",
+      "requiredSkills": ["javascript", "git", "nodejs", "sql", "rest"],
+      "phases": [
+        {
+          "id": "foundation",
+          "name": "Core skills",
+          "steps": [
+            {
+              "id": "javascript-core",
+              "title": "JavaScript for backends",
+              "description": "Async I/O, modules, error handling, and typing with JSDoc or TypeScript intro.",
+              "resourceLabel": "Node.dev learn",
+              "resourceUrl": "https://nodejs.org/en/learn/getting-started/introduction-to-nodejs",
+              "estHours": 20,
+              "skillsAddressed": ["javascript", "nodejs"],
+              "level": "foundation"
+            },
+            {
+              "id": "http-rest",
+              "title": "HTTP & API design",
+              "description": "REST conventions, pagination, versioning, and idempotency basics.",
+              "resourceLabel": "MDN HTTP",
+              "resourceUrl": "https://developer.mozilla.org/en-US/docs/Web/HTTP",
+              "estHours": 10,
+              "skillsAddressed": ["rest"],
+              "level": "foundation"
+            }
+          ]
+        },
+        {
+          "id": "services",
+          "name": "Services & data",
+          "steps": [
+            {
+              "id": "nodejs-express",
+              "title": "Express or Fastify APIs",
+              "description": "Middleware chains, validation, logging, and structured project layout.",
+              "resourceLabel": "Express guide",
+              "resourceUrl": "https://expressjs.com/en/guide/routing.html",
+              "estHours": 25,
+              "skillsAddressed": ["nodejs", "rest"],
+              "level": "core"
+            },
+            {
+              "id": "sql-design",
+              "title": "SQL + transactions",
+              "description": "Schema design, migrations, and safe query patterns.",
+              "resourceLabel": "Use The Index, Luke",
+              "resourceUrl": "https://use-the-index-luke.com/",
+              "estHours": 22,
+              "skillsAddressed": ["sql"],
+              "level": "core"
+            }
+          ]
+        },
+        {
+          "id": "hardening",
+          "name": "Auth & hardening",
+          "steps": [
+            {
+              "id": "auth",
+              "title": "Auth patterns",
+              "description": "Sessions vs JWT, password hashing, rate limits, and OWASP top-10 awareness.",
+              "resourceLabel": "OWASP Cheat Sheet",
+              "resourceUrl": "https://cheatsheetseries.owasp.org/",
+              "estHours": 16,
+              "skillsAddressed": ["nodejs", "rest"],
+              "level": "capstone"
+            }
+          ]
+        }
+      ]
+    },
+    "data": {
+      "title": "Data & analytics foundations",
+      "summary": "SQL, Python, and visualization — strong pairing with backend or product roles.",
+      "requiredSkills": ["sql", "python", "statistics"],
+      "phases": [
+        {
+          "id": "sql",
+          "name": "SQL & databases",
+          "steps": [
+            {
+              "id": "sql-basics",
+              "title": "SQL querying & modeling",
+              "description": "SELECT/JOIN/aggregate, window functions intro, and explaining query plans at a high level.",
+              "resourceLabel": "Mode SQL tutorial",
+              "resourceUrl": "https://mode.com/sql-tutorial/",
+              "estHours": 25,
+              "skillsAddressed": ["sql"],
+              "level": "foundation"
+            }
+          ]
+        },
+        {
+          "id": "python",
+          "name": "Python for data",
+          "steps": [
+            {
+              "id": "python-core",
+              "title": "Python + notebooks",
+              "description": "pandas basics, cleaning pipelines, and reproducible scripts.",
+              "resourceLabel": "pandas getting started",
+              "resourceUrl": "https://pandas.pydata.org/docs/getting_started/index.html",
+              "estHours": 30,
+              "skillsAddressed": ["python"],
+              "level": "core"
+            }
+          ]
+        },
+        {
+          "id": "viz",
+          "name": "Communication",
+          "steps": [
+            {
+              "id": "viz",
+              "title": "Visualization & storytelling",
+              "description": "Choose charts honestly, label clearly, and tie metrics to decisions.",
+              "resourceLabel": "Storytelling With Data",
+              "resourceUrl": "http://www.storytellingwithdata.com/blog",
+              "estHours": 10,
+              "skillsAddressed": ["statistics"],
+              "level": "capstone"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "gapResources": {
+    "html": {
+      "title": "Fill gap: HTML structure",
+      "description": "Your roadmap assumes HTML comfort — spend focused time on semantic tags and forms.",
+      "resourceLabel": "MDN HTML elements",
+      "resourceUrl": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element"
+    },
+    "css": {
+      "title": "Fill gap: CSS layout",
+      "description": "Practice Flexbox/Grid until common layouts feel automatic.",
+      "resourceLabel": "CSS Grid Garden",
+      "resourceUrl": "https://cssgridgarden.com/"
+    },
+    "javascript": {
+      "title": "Fill gap: JavaScript core",
+      "description": "Solid JS unlocks React and Node — prioritize functions, objects, and async/await.",
+      "resourceLabel": "freeCodeCamp JS",
+      "resourceUrl": "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/"
+    },
+    "git": {
+      "title": "Fill gap: Version control",
+      "description": "Daily commits, branches, and PR reviews mirror professional workflows.",
+      "resourceLabel": "Oh My Git! (game)",
+      "resourceUrl": "https://ohmygit.org/"
+    },
+    "react": {
+      "title": "Fill gap: React",
+      "description": "Build small UIs with components and hooks before tackling large apps.",
+      "resourceLabel": "React.dev Learn",
+      "resourceUrl": "https://react.dev/learn"
+    },
+    "nodejs": {
+      "title": "Fill gap: Node.js runtime",
+      "description": "Run scripts locally, use npm, and build a tiny HTTP server before frameworks.",
+      "resourceLabel": "Node.js learn",
+      "resourceUrl": "https://nodejs.org/en/learn/getting-started/introduction-to-nodejs"
+    },
+    "sql": {
+      "title": "Fill gap: SQL",
+      "description": "Practice joins and aggregations until you can explain a schema to a teammate.",
+      "resourceLabel": "SQLBolt",
+      "resourceUrl": "https://sqlbolt.com/"
+    },
+    "rest": {
+      "title": "Fill gap: REST & HTTP",
+      "description": "Use curl or Thunder Client to call public APIs and inspect responses.",
+      "resourceLabel": "HTTP.cat (status codes)",
+      "resourceUrl": "https://http.cat/"
+    },
+    "python": {
+      "title": "Fill gap: Python",
+      "description": "Syntax, virtual environments, and scripting before data libraries.",
+      "resourceLabel": "Python official tutorial",
+      "resourceUrl": "https://docs.python.org/3/tutorial/"
+    },
+    "statistics": {
+      "title": "Fill gap: Statistics intuition",
+      "description": "Means, distributions, and when averages lie — supports analytics interviews.",
+      "resourceLabel": "Khan Academy statistics",
+      "resourceUrl": "https://www.khanacademy.org/math/statistics-probability"
+    }
+  }
+}
