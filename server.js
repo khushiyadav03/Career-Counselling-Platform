@@ -5,7 +5,12 @@ const fs = require('fs').promises;
 const { Buffer } = require('buffer');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
-const sqlite3 = require('sqlite3').verbose();
+let sqlite3 = null;
+try {
+  sqlite3 = require('sqlite3').verbose();
+} catch (err) {
+  console.warn('SQLite3 is not supported in this environment. Falling back to JSON file storage.', err.message);
+}
 const {
   buildPersonalizedPath,
   validateLearningPathShape,
@@ -101,6 +106,9 @@ app.use('/api', basicAuth);
 let dbInstance = null;
 
 function getDb() {
+  if (!sqlite3) {
+    throw new Error('SQLite3 module is not loaded');
+  }
   if (!dbInstance) {
     const fsSync = require('fs');
     const dir = path.dirname(dbPath);
@@ -575,9 +583,13 @@ app.post('/api/contact', async (req, res) => {
     if (!name || !email || !message) {
       return res.status(400).json({ error: 'Name, email, and message are required' });
     }
-    await initDb();
     const timestamp = new Date().toISOString();
-    await dbRun('INSERT INTO contacts (name, email, message, at) VALUES (?, ?, ?, ?)', [name, email, message, timestamp]);
+    try {
+      await initDb();
+      await dbRun('INSERT INTO contacts (name, email, message, at) VALUES (?, ?, ?, ?)', [name, email, message, timestamp]);
+    } catch (dbErr) {
+      console.warn('Could not save contact to SQLite:', dbErr.message);
+    }
     
     await fs.mkdir(path.dirname(contactsPath), { recursive: true });
     let list = [];
@@ -613,17 +625,16 @@ if (isProd) {
 
 function startServer() {
   initDb()
-    .then(() => {
+    .catch((err) => {
+      console.warn('SQLite Database initialization warning:', err.message);
+    })
+    .finally(() => {
       app.listen(port, () => {
         console.log(`Server http://localhost:${port} (${isProd ? 'production' : 'development API'})`);
         if (!GEMINI_API_KEY) {
           console.warn('Warning: GEMINI_API_KEY is not configured. Gemini AI features will use fallback behavior.');
         }
       });
-    })
-    .catch((err) => {
-      console.error('Database initialization failed:', err);
-      process.exit(1);
     });
 }
 
