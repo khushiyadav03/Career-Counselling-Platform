@@ -40,15 +40,7 @@ export default function LearningPath() {
   const [weeklyHours, setWeeklyHours] = useState(10);
   const [toast, setToast] = useState('');
 
-  useEffect(() => {
-    if (!profile) return;
-    setSkills(profile.skills?.length ? [...profile.skills] : []);
-    setProficiency({ ...profile.proficiency });
-    setTargetTrack(profile.targetTrack || 'fullstack');
-    setCareerGoal(profile.careerGoal || '');
-    setExperienceLevel(profile.experienceLevel || 'entry');
-    setWeeklyHours(profile.weeklyHours || 10);
-  }, [profile]);
+
 
   const showToast = useCallback((msg) => {
     setToast(msg);
@@ -107,6 +99,16 @@ export default function LearningPath() {
     showToast(r.ok ? 'Cleared saved path.' : 'Could not clear.');
   };
 
+  const onStartOver = () => {
+    setSkills([]);
+    setProficiency({});
+    setTargetTrack('fullstack');
+    setCareerGoal('');
+    setExperienceLevel('entry');
+    setWeeklyHours(10);
+    showToast('Form cleared.');
+  };
+
   const path = profile?.lastLearningPath;
 
   const totalSteps = useMemo(() => {
@@ -129,8 +131,7 @@ export default function LearningPath() {
         <h1 className="page-title">Personalized roadmap from your skills</h1>
         <p className="page-lead narrow">
           We analyze your <strong>skills</strong>, <strong>proficiency</strong>, <strong>career goal</strong>, and{' '}
-          <strong>weekly hours</strong>, then build a phased plan with curated resources. Rules run locally; add{' '}
-          <code className="inline-code">GEMINI_API_KEY</code> for an optional AI-refined version.
+          <strong>weekly hours</strong>, then build a phased plan with curated resources.
         </p>
       </section>
 
@@ -259,6 +260,9 @@ export default function LearningPath() {
           )}
 
           <div className="form-actions-row learn-actions">
+            <button type="button" className="btn btn-secondary btn-outline" onClick={onStartOver}>
+              Start over
+            </button>
             <button type="button" className="btn btn-secondary" onClick={onSaveProfile} disabled={saving}>
               {saving ? 'Saving…' : 'Save profile'}
             </button>
