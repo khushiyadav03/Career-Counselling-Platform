@@ -2,8 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const fs = require('fs').promises;
+const { Buffer } = require('buffer');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
+const sqlite3 = require('sqlite3').verbose();
 const {
   buildPersonalizedPath,
   validateLearningPathShape,
@@ -14,9 +16,13 @@ const app = express();
 const port = process.env.PORT || 3000;
 const isProd = process.env.NODE_ENV === 'production';
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY?.trim();
-const goalsPath = path.join(__dirname, 'data', 'career-goals.json');
-const contactsPath = path.join(__dirname, 'data', 'contacts.json');
-const profilePath = path.join(__dirname, 'data', 'user-profile.json');
+const BASIC_AUTH_USER = process.env.BASIC_AUTH_USER?.trim();
+const BASIC_AUTH_PASSWORD = process.env.BASIC_AUTH_PASSWORD?.trim();
+const dataDir = process.env.DATA_DIR || (process.env.VERCEL ? '/tmp/career-compass-data' : path.join(__dirname, 'data'));
+const dbPath = path.join(dataDir, 'app.db');
+const goalsPath = path.join(dataDir, 'career-goals.json');
+const contactsPath = path.join(dataDir, 'contacts.json');
+const profilePath = path.join(dataDir, 'user-profile.json');
 const roadmapsPath = path.join(__dirname, 'data', 'roadmaps.json');
 
 const MAX_FIELD_LEN = 120;
@@ -45,7 +51,12 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json({ limit: '64kb' }));
+app.use((req, res, next) => {
+  if (req.body && typeof req.body === 'object' && Object.keys(req.body).length > 0) {
+    return next();
+  }
+  express.json({ limit: '64kb' })(req, res, next);
+});
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -70,27 +81,135 @@ const learningPathLimiter = rateLimit({
 
 app.use('/api', apiLimiter);
 
+function basicAuth(req, res, next) {
+  if (!BASIC_AUTH_USER || !BASIC_AUTH_PASSWORD) return next();
+  const auth = req.headers.authorization || '';
+  const [scheme, encoded] = auth.split(' ');
+  if (scheme !== 'Basic' || !encoded) {
+    res.set('WWW-Authenticate', 'Basic realm="Career Compass"');
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+  const decoded = Buffer.from(encoded, 'base64').toString('utf8');
+  const [user, pass] = decoded.split(':');
+  if (user === BASIC_AUTH_USER && pass === BASIC_AUTH_PASSWORD) return next();
+  res.set('WWW-Authenticate', 'Basic realm="Career Compass"');
+  return res.status(401).json({ error: 'Invalid credentials' });
+}
+
+app.use('/api', basicAuth);
+
+let dbInstance = null;
+
+function getDb() {
+  if (!dbInstance) {
+    const fsSync = require('fs');
+    const dir = path.dirname(dbPath);
+    if (!fsSync.existsSync(dir)) {
+      fsSync.mkdirSync(dir, { recursive: true });
+    }
+    dbInstance = new sqlite3.Database(dbPath);
+  }
+  return dbInstance;
+}
+
+function dbRun(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    getDb().run(sql, params, function (err) {
+      if (err) return reject(err);
+      resolve({ id: this.lastID, changes: this.changes });
+    });
+  });
+}
+
+function dbAll(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    getDb().all(sql, params, (err, rows) => {
+      if (err) return reject(err);
+      resolve(rows || []);
+    });
+  });
+}
+
+function dbGet(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    getDb().get(sql, params, (err, row) => {
+      if (err) return reject(err);
+      resolve(row || null);
+    });
+  });
+}
+
+async function initDb() {
+  await fs.mkdir(path.dirname(dbPath), { recursive: true });
+  await dbRun(`
+    CREATE TABLE IF NOT EXISTS career_goals (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      careerField TEXT NOT NULL,
+      experienceLevel TEXT NOT NULL,
+      notes TEXT DEFAULT ''
+    )
+  `);
+  await dbRun(`
+    CREATE TABLE IF NOT EXISTS profile (
+      id INTEGER PRIMARY KEY CHECK (id = 1),
+      payload TEXT NOT NULL DEFAULT '{}' 
+    )
+  `);
+  await dbRun(`
+    CREATE TABLE IF NOT EXISTS contacts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      message TEXT NOT NULL,
+      at TEXT NOT NULL
+    )
+  `);
+}
+
 async function readGoals() {
   try {
+    const rows = await dbAll('SELECT careerField, experienceLevel, notes FROM career_goals ORDER BY id ASC');
+    return rows.map((row) => ({ careerField: row.careerField, experienceLevel: row.experienceLevel, notes: row.notes || '' }));
+  } catch {
     const raw = await fs.readFile(goalsPath, 'utf8');
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
   }
 }
 
 async function writeGoals(goals) {
-  await fs.mkdir(path.dirname(goalsPath), { recursive: true });
-  await fs.writeFile(goalsPath, JSON.stringify(goals, null, 2), 'utf8');
-}
-
-async function readRoadmaps() {
-  const raw = await fs.readFile(roadmapsPath, 'utf8');
-  return JSON.parse(raw);
+  try {
+    await initDb();
+    await dbRun('DELETE FROM career_goals');
+    for (const goal of goals) {
+      await dbRun('INSERT INTO career_goals (careerField, experienceLevel, notes) VALUES (?, ?, ?)', [
+        goal.careerField || '',
+        goal.experienceLevel || '',
+        goal.notes || '',
+      ]);
+    }
+  } catch (err) {
+    console.warn('Failed to write goals to SQLite:', err.message);
+  }
+  try {
+    await fs.mkdir(path.dirname(goalsPath), { recursive: true });
+    await fs.writeFile(goalsPath, JSON.stringify(goals, null, 2), 'utf8');
+  } catch (err) {
+    console.warn('Failed to write goals to JSON file:', err.message);
+  }
 }
 
 async function readProfile() {
+  try {
+    await initDb();
+    const row = await dbGet('SELECT payload FROM profile WHERE id = 1');
+    if (row?.payload) {
+      const p = JSON.parse(row.payload);
+      return { ...defaultProfile, ...p, skills: Array.isArray(p.skills) ? p.skills : [] };
+    }
+  } catch (error) {
+    console.warn('Profile DB fallback warning:', error.message);
+  }
   try {
     const raw = await fs.readFile(profilePath, 'utf8');
     const p = JSON.parse(raw);
@@ -101,8 +220,23 @@ async function readProfile() {
 }
 
 async function writeProfile(profile) {
-  await fs.mkdir(path.dirname(profilePath), { recursive: true });
-  await fs.writeFile(profilePath, JSON.stringify(profile, null, 2), 'utf8');
+  try {
+    await initDb();
+    await dbRun('REPLACE INTO profile (id, payload) VALUES (1, ?)', [JSON.stringify(profile)]);
+  } catch (err) {
+    console.warn('Failed to write profile to SQLite:', err.message);
+  }
+  try {
+    await fs.mkdir(path.dirname(profilePath), { recursive: true });
+    await fs.writeFile(profilePath, JSON.stringify(profile, null, 2), 'utf8');
+  } catch (err) {
+    console.warn('Failed to write profile to JSON file:', err.message);
+  }
+}
+
+async function readRoadmaps() {
+  const raw = await fs.readFile(roadmapsPath, 'utf8');
+  return JSON.parse(raw);
 }
 
 function sanitizeProfile(body) {
@@ -288,6 +422,7 @@ Rules:
 
 app.get('/api/career-goals', async (req, res) => {
   try {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     const careerGoals = await readGoals();
     res.json({ careerGoals });
   } catch {
@@ -327,6 +462,7 @@ app.delete('/api/career-goals/:index', async (req, res) => {
 
 app.get('/api/profile', async (req, res) => {
   try {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     const profile = await readProfile();
     res.json({ profile });
   } catch {
@@ -439,17 +575,20 @@ app.post('/api/contact', async (req, res) => {
     if (!name || !email || !message) {
       return res.status(400).json({ error: 'Name, email, and message are required' });
     }
-    const entry = { name, email, message, at: new Date().toISOString() };
+    await initDb();
+    const timestamp = new Date().toISOString();
+    await dbRun('INSERT INTO contacts (name, email, message, at) VALUES (?, ?, ?, ?)', [name, email, message, timestamp]);
+    
+    await fs.mkdir(path.dirname(contactsPath), { recursive: true });
     let list = [];
     try {
       const raw = await fs.readFile(contactsPath, 'utf8');
-      list = JSON.parse(raw);
-      if (!Array.isArray(list)) list = [];
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) list = parsed;
     } catch {
-      list = [];
+      /* ignore file read error (file may not exist yet) */
     }
-    list.push(entry);
-    await fs.mkdir(path.dirname(contactsPath), { recursive: true });
+    list.push({ name, email, message, at: timestamp });
     await fs.writeFile(contactsPath, JSON.stringify(list, null, 2), 'utf8');
     res.json({ ok: true });
   } catch {
@@ -458,7 +597,8 @@ app.post('/api/contact', async (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error(err.stack || err);
+  if (res.headersSent) return next(err);
   res.status(500).json({ error: 'Internal server error' });
 });
 
@@ -471,9 +611,24 @@ if (isProd) {
   });
 }
 
-app.listen(port, () => {
-  console.log(`Server http://localhost:${port} (${isProd ? 'production' : 'development API'})`);
-  if (!GEMINI_API_KEY) {
-    console.warn('Warning: GEMINI_API_KEY is not configured. Gemini AI features will use fallback behavior.');
-  }
-});
+function startServer() {
+  initDb()
+    .then(() => {
+      app.listen(port, () => {
+        console.log(`Server http://localhost:${port} (${isProd ? 'production' : 'development API'})`);
+        if (!GEMINI_API_KEY) {
+          console.warn('Warning: GEMINI_API_KEY is not configured. Gemini AI features will use fallback behavior.');
+        }
+      });
+    })
+    .catch((err) => {
+      console.error('Database initialization failed:', err);
+      process.exit(1);
+    });
+}
+
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = app;

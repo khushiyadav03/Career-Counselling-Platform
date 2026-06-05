@@ -114,13 +114,31 @@ npm install
 cp .env.example .env
 # Add a real Gemini API key to .env if you want AI chat and AI learning paths
 npm run dev
+npm run lint
 ```
 
 - Open **http://localhost:5173** (Vite proxies `/api` → Express on **3000**).- Do not use `npm run preview` for the full app: that serves only built frontend assets and will return 404 for `/api/*` unless the backend is also running separately.- Production-like run: `npm run build` then `npm start` → **http://localhost:3000**.
 
 ---
 
-## Deployment (e.g. Render)
+## Resume-ready checklist
+
+- Clean, responsive UI with clear hero, cards, and CTA flows
+- Full-stack architecture with a real Express API and React frontend
+- File-backed persistence for easy local demo runs
+- Optional Gemini AI path with graceful fallbacks
+- Build validation and linting support for portfolio confidence
+- SQLite-backed persistence + optional basic auth for more production-ready behavior
+
+## Deployment
+
+### Vercel
+
+- The repo now includes `vercel.json` for the SPA build output and `/api/*` routing.
+- The API entrypoint is `api/index.js`, which uses the Express app from `server.js`.
+- Set `GEMINI_API_KEY` (optional) in the Vercel dashboard for AI chat / AI learning paths.
+
+### Render / Node host
 
 - **Build command:** `npm run build`
 - **Start command:** `npm start`

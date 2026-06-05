@@ -33,8 +33,9 @@ export default function SetGoals() {
       <div className="section-head">
         <h1 className="page-title-inline">Career goals</h1>
         <p className="page-lead narrow">
-          Stack multiple goals if you are exploring paths. CareerBot reads this list when you chat. Pair with
-          the <Link to="/learn">Learning Path</Link> for skills-based roadmaps.
+          Career goals are your <strong>north star</strong>: they shape the coach conversation and help the
+          roadmap stay focused. Stack a few options here, then pair them with the{' '}
+          <Link to="/learn">Learning Path</Link> for a concrete skills plan.
         </p>
         {error && <p className="inline-hint">{error}</p>}
         {loading && <p className="inline-hint">Loading goals…</p>}

@@ -164,8 +164,11 @@ function ChatBot({ pageKey }) {
               m.typing ? (
                 <div key={m.id} className="chat-row bot">
                   <div className="bubble bot typing-bubble">
-                    <span className="typing-spinner" aria-hidden />
-                    Thinking…
+                    <div className="typing-indicator" aria-hidden="true">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
                   </div>
                 </div>
               ) : (

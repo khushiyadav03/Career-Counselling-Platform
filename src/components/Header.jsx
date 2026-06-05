@@ -6,13 +6,25 @@ const links = [
   { to: '/learn', label: 'Learning Path' },
   { to: '/job-search', label: 'Job Search' },
   { to: '/set-goals', label: 'Career Goals' },
-  { to: '/#features', label: 'Highlights', hash: true },
-  { to: '/#contact', label: 'Contact', hash: true },
-  { to: '/get-started', label: 'Get Started' },
 ];
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [isDark, setIsDark] = useState(() => {
+    return document.documentElement.classList.contains('dark');
+  });
+
+  const toggleTheme = () => {
+    if (document.documentElement.classList.contains('dark')) {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+      setIsDark(false);
+    } else {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+      setIsDark(true);
+    }
+  };
 
   return (
     <header className="site-header">
@@ -43,14 +55,24 @@ export default function Header() {
           )
         )}
       </nav>
-      <button
-        type="button"
-        className="nav-toggle"
-        aria-label="Toggle menu"
-        onClick={() => setOpen((v) => !v)}
-      >
-        <i className={`fas ${open ? 'fa-times' : 'fa-bars'}`} />
-      </button>
+      <div className="header-actions">
+        <button
+          type="button"
+          className="theme-toggle-btn"
+          aria-label="Toggle theme"
+          onClick={toggleTheme}
+        >
+          <i className={`fas ${isDark ? 'fa-sun' : 'fa-moon'}`} />
+        </button>
+        <button
+          type="button"
+          className="nav-toggle"
+          aria-label="Toggle menu"
+          onClick={() => setOpen((v) => !v)}
+        >
+          <i className={`fas ${open ? 'fa-times' : 'fa-bars'}`} />
+        </button>
+      </div>
     </header>
   );
 }

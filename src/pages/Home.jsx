@@ -26,6 +26,7 @@ export default function Home() {
   const [level, setLevel] = useState('');
   const [notes, setNotes] = useState('');
   const [toast, setToast] = useState('');
+  const [savingGoal, setSavingGoal] = useState(false);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -34,16 +35,24 @@ export default function Home() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (!field.trim() || !level.trim()) return;
-    const r = await addGoal({
-      careerField: field.trim(),
-      experienceLevel: level.trim(),
-      notes: notes.trim(),
-    });
-    setField('');
-    setLevel('');
-    setNotes('');
-    showToast(r.offline ? 'Saved locally — server unavailable.' : 'Career goal saved.');
+    if (!field.trim() || !level.trim() || savingGoal) return;
+
+    setSavingGoal(true);
+    try {
+      const r = await addGoal({
+        careerField: field.trim(),
+        experienceLevel: level.trim(),
+        notes: notes.trim(),
+      });
+      setField('');
+      setLevel('');
+      setNotes('');
+      showToast(r.offline ? 'Saved locally — server unavailable.' : 'Career goal saved.');
+    } catch {
+      showToast('Could not save your goal right now.');
+    } finally {
+      setSavingGoal(false);
+    }
   };
 
   const openChat = () => {
@@ -60,10 +69,16 @@ export default function Home() {
           <p className="eyebrow">Full-stack portfolio app</p>
           <h1 className="hero-title">One place to learn, search, and apply</h1>
           <p className="hero-lead">
-            Personalized <strong>learning paths</strong> from your skills and proficiency, a{' '}
-            <strong>job board launcher</strong> with your filters, and <strong>CareerBot</strong> for resume and
-            interview prep—Express + React + file-backed APIs.
+            Define your <strong>career goals</strong>, generate a <strong>learning path</strong>, and jump into
+            <strong> job search</strong> with one clear flow. This app is designed to feel like a real career
+            planning assistant, not just a demo dashboard.
           </p>
+          <div className="hero-badges" aria-label="Project highlights">
+            <span className="hero-chip">React + Express</span>
+            <span className="hero-chip">JSON persistence</span>
+            <span className="hero-chip">Optional Gemini AI</span>
+            <span className="hero-chip">Portfolio-ready UX</span>
+          </div>
           <div className="hero-actions">
             <Link to="/learn" className="btn btn-primary">
               Build learning path
@@ -75,6 +90,20 @@ export default function Home() {
               Ask CareerBot
             </button>
           </div>
+          <div className="stat-grid" aria-label="Project quality highlights">
+            <article className="stat-card">
+              <strong>Rule-based + AI-ready</strong>
+              <span>Learning path generation with fallback behavior for demo reliability.</span>
+            </article>
+            <article className="stat-card">
+              <strong>Recruiter-friendly</strong>
+              <span>Clear flows for goals, job search, and chat assistant in one dashboard.</span>
+            </article>
+            <article className="stat-card">
+              <strong>Production-minded</strong>
+              <span>Rate limits, CORS, file-backed persistence, and clean API separation.</span>
+            </article>
+          </div>
         </div>
         <div className="hero-glow" aria-hidden />
       </section>
@@ -83,7 +112,7 @@ export default function Home() {
         <div className="dashboard-grid">
           <Link to="/learn" className="dash-card dash-card-feature">
             <span className="dash-icon">
-              <i className="fas fa-route" />
+              <i className="fa-solid fa-route" />
             </span>
             <h2>Learning Path</h2>
             <p>
@@ -104,7 +133,7 @@ export default function Home() {
 
           <Link to="/job-search" className="dash-card">
             <span className="dash-icon">
-              <i className="fas fa-briefcase" />
+              <i className="fa-solid fa-briefcase" />
             </span>
             <h2>Job Search</h2>
             <p>Indeed, LinkedIn, Google Jobs, Glassdoor (+ Naukri for India) with your keywords and location.</p>
@@ -113,7 +142,7 @@ export default function Home() {
 
           <Link to="/set-goals" className="dash-card">
             <span className="dash-icon">
-              <i className="fas fa-bullseye" />
+              <i className="fa-solid fa-bullseye" />
             </span>
             <h2>Career goals</h2>
             <p>Persisted goals feed CareerBot and complement your learning profile.</p>
@@ -123,7 +152,7 @@ export default function Home() {
 
           <div className="dash-card dash-card-static">
             <span className="dash-icon">
-              <i className="fas fa-user-gear" />
+              <i className="fa-solid fa-user-gear" />
             </span>
             <h2>Your profile snapshot</h2>
             <p>
@@ -141,12 +170,12 @@ export default function Home() {
       <section className="section" id="features">
         <div className="section-head">
           <h2>Why this belongs on a full-stack resume</h2>
-          <p>End-to-end features recruiters can click through in a demo.</p>
+          <p>End-to-end features recruiters can click through in a demo, with clean flow and practical value.</p>
         </div>
         <div className="feature-grid">
           <article className="feature-card">
             <div className="feature-icon">
-              <i className="fas fa-gears" />
+              <i className="fa-solid fa-gears" />
             </div>
             <h3>Recommendation-style pipeline</h3>
             <p>
@@ -156,7 +185,7 @@ export default function Home() {
           </article>
           <article className="feature-card">
             <div className="feature-icon">
-              <i className="fas fa-server" />
+              <i className="fa-solid fa-server" />
             </div>
             <h3>REST API + persistence</h3>
             <p>
@@ -166,7 +195,7 @@ export default function Home() {
           </article>
           <article className="feature-card">
             <div className="feature-icon">
-              <i className="fas fa-shield-halved" />
+              <i className="fa-solid fa-shield-halved" />
             </div>
             <h3>Security-minded</h3>
             <p>Gemini only on the server, rate limits, CORS, and no secrets in the Vite bundle.</p>
@@ -175,6 +204,28 @@ export default function Home() {
       </section>
 
       <section className="section section-alt" id="goals">
+        <div className="section-head">
+          <h2>What you can improve next</h2>
+          <p>A few portfolio-grade upgrades to move this from demo to production-quality showcase.</p>
+        </div>
+        <div className="feature-grid">
+          <article className="feature-card">
+            <div className="feature-icon"><i className="fa-solid fa-palette" /></div>
+            <h3>UI polish</h3>
+            <p>Refined cards, stronger hierarchy, smoother transitions, and a more premium visual system.</p>
+          </article>
+          <article className="feature-card">
+            <div className="feature-icon"><i className="fa-solid fa-chart-line" /></div>
+            <h3>Product depth</h3>
+            <p>Add saved history, analytics, and richer learning-path insights for a stronger portfolio story.</p>
+          </article>
+          <article className="feature-card">
+            <div className="feature-icon"><i className="fa-solid fa-shield-halved" /></div>
+            <h3>Engineering quality</h3>
+            <p>Testing, linting, CI, and deployment polish make this feel ready for real-world review.</p>
+          </article>
+        </div>
+
         <div className="section-head">
           <h2>Quick goal capture</h2>
           <p>Optional: one-line goals list for the coach. Full editor also on the Career Goals page.</p>
@@ -210,9 +261,12 @@ export default function Home() {
               maxLength={2000}
             />
           </label>
-          <button type="submit" className="btn btn-primary btn-block">
-            Add goal
+          <button type="submit" className="btn btn-primary btn-block" disabled={savingGoal}>
+            {savingGoal ? 'Saving goal…' : 'Add goal'}
           </button>
+          <p className="inline-hint" aria-live="polite">
+            {savingGoal ? 'Saving to your goal list…' : 'Goals are saved locally if the API is unavailable.'}
+          </p>
         </form>
 
         <div className="goals-output card-elevated">
@@ -298,6 +352,9 @@ function ContactForm({ onToast }) {
       <button type="submit" className="btn btn-primary btn-block" disabled={pending}>
         {pending ? 'Sending…' : 'Send message'}
       </button>
+      <p className="inline-hint" aria-live="polite">
+        {pending ? 'Sending your message…' : 'We save contact messages on the server for demo use.'}
+      </p>
     </form>
   );
 }
